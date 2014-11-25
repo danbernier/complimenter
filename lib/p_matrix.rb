@@ -1,8 +1,5 @@
 class PMatrix
   def initialize(p_hash)
-    p p_hash
-    p normalize(p_hash)
-    p cumulative(normalize(p_hash))
     @cumulative = cumulative(normalize(p_hash))
   end
 
