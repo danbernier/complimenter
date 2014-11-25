@@ -1,43 +1,38 @@
 task default: [:insult]
 
 task insult: [:init] do
-  require 'insulter'
-  3.times do
-    puts Insulter.new.insults
-  end
+  with(Insulter.new, &putser)
 end
 
 task compliment: [:init] do
-  require 'complimenter'
-  3.times do
-    puts Complimenter.new.compliments
-  end
+  with(Complimenter.new, &putser)
 end
 
 task say_insult: [:init] do
-  require 'insulter'
-  3.times do
-    Insulter.new.insults.tap do |insult|
-      puts insult
-      `espeak "#{insult}"`
-    end
-  end
+  with(Insulter.new, &speaker)
 end
 
 task say_compliment: [:init] do
-  require 'complimenter'
-  3.times do
-    Complimenter.new.compliments.tap do |c|
-      puts c
-      `espeak "#{c}"`
-    end
-  end
+  with(Complimenter.new, &speaker)
 end
 
-def say(message)
-  `espeak #{message}`
+def with(generator)
+  3.times { yield(generator.phrases) }
+end
+
+def putser
+  ->(s) { puts s }
+end
+
+def speaker
+  ->(s) {
+    puts s
+    `espeak "#{s}"`
+  }
 end
 
 task :init do
   $LOAD_PATH << './lib'
+  require 'complimenter'
+  require 'insulter'
 end
