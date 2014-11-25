@@ -13,7 +13,7 @@ module Generator
   end
 
   def a(word)
-    if word =~ /^\s*[aeiou]/
+    if %w(a e i o u).include? word.lstrip[0]
       "an #{word}"
     else
       "a #{word}"
